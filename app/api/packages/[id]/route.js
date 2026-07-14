@@ -1,5 +1,6 @@
+import database from "../../../lib/db";
 
-import database from "@/lib/db";
+
 
 export async function GET(req, { params }) {
   const { id } = await params; // ❌ Not awaited

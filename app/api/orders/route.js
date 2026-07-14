@@ -1,6 +1,7 @@
 
 import { verifyToken } from "@/app/lib/auth";
-import database from "@/app/lib/db";
+import database from "../../lib/db";
+
 
 
 export async function POST(req) {

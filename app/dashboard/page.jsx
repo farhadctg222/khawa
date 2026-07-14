@@ -52,6 +52,7 @@ export default function Dashboard() {
   const [orders, setOrders] = useState([]);
   const [selectedOrder, setSelectedOrder] = useState(null);
 const prevLengthRef = useRef(0);
+const audioRef = useRef(null);
 const [soundEnabled, setSoundEnabled] = useState(false);
   const [editId, setEditId] = useState(null);
   const [editData, setEditData] = useState({
@@ -62,10 +63,10 @@ const [soundEnabled, setSoundEnabled] = useState(false);
 
   // 🔊 SOUND FUNCTION
   const playSound = () => {
-  if (!soundEnabled) return;
+  if (!soundEnabled || !audioRef.current) return;
 
-  const audio = new Audio("/Notification.mp3");
-  audio.play().catch(() => {});
+  audioRef.current.currentTime = 0;
+  audioRef.current.play().catch(() => {});
 };
 
   // ======================
@@ -97,9 +98,27 @@ const [soundEnabled, setSoundEnabled] = useState(false);
   }
 
 
-  if(Array.isArray(data)){
-    setOrders(data);
+  if (Array.isArray(data)) {
+
+  if (audioRef.current === null) {
+    audioRef.current = new Audio("/Notification.mp3");
   }
+
+  if (prevLengthRef.current === 0) {
+    prevLengthRef.current = data.length;
+  }
+
+  if (
+    soundEnabled &&
+    data.length > prevLengthRef.current
+  ) {
+    playSound();
+  }
+
+  prevLengthRef.current = data.length;
+
+  setOrders(data);
+}
 
 
  }

@@ -46,7 +46,8 @@
 
 
 import jwt from "jsonwebtoken";
-import database from "@/app/lib/db";
+import database from "../../../lib/db";
+
 export async function POST(req) {
   try {
     const { email, password } = await req.json();

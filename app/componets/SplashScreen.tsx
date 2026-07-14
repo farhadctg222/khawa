@@ -1,0 +1,77 @@
+"use client";
+
+import { useEffect, useState } from "react";
+
+
+type SplashScreenProps = {
+  children: React.ReactNode;
+};
+
+
+export default function SplashScreen({
+  children,
+}: SplashScreenProps) {
+
+  const [showSplash, setShowSplash] = useState(false);
+  const [checked, setChecked] = useState(false);
+
+
+  useEffect(() => {
+
+    const seen = localStorage.getItem("splashShown");
+
+
+    if (!seen) {
+
+      setShowSplash(true);
+
+
+      const timer = setTimeout(() => {
+
+        localStorage.setItem(
+          "splashShown",
+          "true"
+        );
+
+        setShowSplash(false);
+        setChecked(true);
+
+      }, 5000);
+
+
+      return () => clearTimeout(timer);
+
+
+    } else {
+
+      setChecked(true);
+
+    }
+
+  }, []);
+
+
+  if (showSplash) {
+
+    return (
+      <div className="fixed inset-0 bg-white flex items-center justify-center z-50">
+
+        <img
+          src="/Welcome.jpg"
+          alt="Welcome"
+          className="w-80"
+        />
+
+      </div>
+    );
+
+  }
+
+
+  if (!checked) {
+    return null;
+  }
+
+
+  return children;
+}

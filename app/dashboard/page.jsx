@@ -419,19 +419,21 @@ o.payment_status === "paid"
                     Invoice
                   </button>
 
-                  {/* <button
-                    onClick={() => {
-                      setEditId(o.id);
-                      setEditData({
-                        name: o.customer_name,
-                        phone: o.phone,
-                        address: o.address,
-                      });
-                    }}
-                    className="text-blue-600 text-sm"
-                  >
-                    Edit
-                  </button> */}
+                 {role === "admin" && (
+  <button
+    onClick={() => {
+      setEditId(o.id);
+      setEditData({
+        name: o.customer_name,
+        phone: o.phone,
+        address: o.address,
+      });
+    }}
+    className="text-blue-600 text-sm font-medium"
+  >
+    ✏️ Edit
+  </button>
+)}
                   {role === "admin" && (
   <button
     onClick={async () => {

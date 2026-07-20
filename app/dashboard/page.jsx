@@ -410,64 +410,56 @@ o.payment_status === "paid"
     />
     )}
 
-                <div className="flex gap-3">
+                <div className="flex flex-wrap gap-2 mt-3">
 
-                  <button
-                    onClick={() => setSelectedOrder(o)}
-                    className="text-purple-600 text-sm"
-                  >
-                    Invoice
-                  </button>
-
-                 {role === "admin" && (
   <button
-    onClick={() => {
-      setEditId(o.id);
-      setEditData({
-        name: o.customer_name,
-        phone: o.phone,
-        address: o.address,
-      });
-    }}
-    className="text-blue-600 text-sm font-medium"
+    onClick={() => setSelectedOrder(o)}
+    className="px-3 py-1 bg-purple-600 text-white rounded-lg hover:bg-purple-700 text-sm"
   >
-    ✏️ Edit
+    🧾 Invoice
   </button>
-)}
-                  {role === "admin" && (
-  <button
-    onClick={async () => {
 
-      const confirmDelete = confirm(
-        "আপনি কি এই order delete করতে চান?"
-      );
+  {role === "admin" && (
+    <>
+      <button
+        onClick={() => {
+          setEditId(o.id);
+          setEditData({
+            name: o.customer_name,
+            phone: o.phone,
+            address: o.address,
+          });
+        }}
+        className="px-3 py-1 bg-blue-600 text-white rounded-lg hover:bg-blue-700 text-sm"
+      >
+        ✏️ Edit
+      </button>
 
-      if(!confirmDelete) return;
+      <button
+        onClick={async () => {
+          if (!confirm("আপনি কি এই Order Delete করতে চান?")) return;
 
+          const token = localStorage.getItem("token");
 
-      const token = localStorage.getItem("token");
+          const res = await fetch(`/api/orders/${o.id}`, {
+            method: "DELETE",
+            headers: {
+              authorization: `Bearer ${token}`,
+            },
+          });
 
+          if (res.ok) {
+            loadOrders();
+          }
+        }}
+        className="px-3 py-1 bg-red-600 text-white rounded-lg hover:bg-red-700 text-sm"
+      >
+        🗑 Delete
+      </button>
+    </>
+  )}
 
-      const res = await fetch(`/api/orders/${o.id}`, {
-        method:"DELETE",
-        headers:{
-          authorization:`Bearer ${token}`
-        }
-      });
-
-
-      if(res.ok){
-        loadOrders();
-      }
-
-    }}
-    className="text-red-600 text-sm"
-  >
-    Delete
-  </button>
-)}
-
-                  </div>
+</div>
               </div>
 
               {/* EDIT FORM */}

@@ -62,7 +62,7 @@ export default function SplashScreen({
     src="/welcome.png"
     alt="welcome"
     fill
-    sizes="2px"
+    sizes="200px"
     className="object-contain"
   />
 </div>

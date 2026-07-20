@@ -72,6 +72,42 @@ const [soundEnabled, setSoundEnabled] = useState(false);
   // ======================
   // 🔥 LOAD ORDERS FUNCTION (MAIN FIX)
   // ======================
+
+
+  const today = new Date().toISOString().split("T")[0];
+
+
+const todaySale = orders
+.filter(o => 
+  o.payment_status === "paid" &&
+  o.created_at?.startsWith(today)
+)
+.reduce(
+(sum,o)=> sum + Number(o.total_price),
+0
+);
+
+
+const totalSale = orders
+.filter(o => o.payment_status === "paid")
+.reduce(
+(sum,o)=> sum + Number(o.total_price),
+0
+);
+
+
+const deliveredOrders = orders.filter(
+o=>o.status==="delivered"
+).length;
+
+
+
+const dueAmount = orders
+.filter(o=>o.payment_status!=="paid")
+.reduce(
+(sum,o)=>sum + Number(o.total_price),
+0
+);
   const loadOrders = async () => {
 
  const token = localStorage.getItem("token");
@@ -191,6 +227,62 @@ useEffect(() => {
       <h1 className="text-3xl font-bold mb-6 text-gray-800">
         📦 Orders Dashboard
       </h1>
+      <div className="grid md:grid-cols-4 gap-5 mb-8">
+
+
+<div className="bg-white p-5 rounded-xl shadow">
+<p className="text-gray-500">
+আজকের বিক্রি
+</p>
+
+<h2 className="text-3xl font-bold text-green-600">
+৳ {todaySale}
+</h2>
+
+</div>
+
+
+
+<div className="bg-white p-5 rounded-xl shadow">
+<p className="text-gray-500">
+মোট বিক্রি
+</p>
+
+<h2 className="text-3xl font-bold text-blue-600">
+৳ {totalSale}
+</h2>
+
+</div>
+
+
+
+<div className="bg-white p-5 rounded-xl shadow">
+<p className="text-gray-500">
+ডেলিভারি সম্পন্ন
+</p>
+
+<h2 className="text-3xl font-bold text-purple-600">
+{deliveredOrders}
+</h2>
+
+</div>
+
+
+
+<div className="bg-white p-5 rounded-xl shadow">
+<p className="text-gray-500">
+বাকি টাকা
+</p>
+
+<h2 className="text-3xl font-bold text-red-600">
+৳ {dueAmount}
+</h2>
+
+</div>
+
+
+</div>
+
 
       {/* ORDERS GRID */}
       <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -283,6 +375,28 @@ useEffect(() => {
                   {o.status?.toUpperCase()}
                 </span>
               </div>
+              {/* PAYMENT STATUS */}
+<div className="mt-2">
+
+<span
+className={`px-3 py-1 text-xs rounded-full text-white
+${
+o.payment_status === "paid"
+? "bg-green-600"
+: "bg-red-500"
+}
+`}
+>
+
+{
+o.payment_status === "paid"
+? "💳 PAID"
+: "💰 UNPAID"
+}
+
+</span>
+
+</div>
 
               {/* ACTIONS */}
               <div className="flex justify-between items-center">

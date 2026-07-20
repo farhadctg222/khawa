@@ -7,22 +7,31 @@ export default function StatusUpdate({ id, onUpdate }) {
   const getToken = () => localStorage.getItem("token");
 
   const update = async (status) => {
-    setLoading(true);
+  setLoading(true);
 
-    const token = getToken();
+  const token = getToken();
 
-    await fetch(`/api/orders/${id}`, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-        authorization: `Bearer ${token}`, // 🔥 FIX
-      },
-      body: JSON.stringify({ status }),
-    });
-
-    onUpdate && onUpdate();
-    setLoading(false);
+  const body = {
+    status,
   };
+
+  // Confirm করলে Payment Paid হবে
+  if (status === "confirmed") {
+    body.payment_status = "paid";
+  }
+
+  await fetch(`/api/orders/${id}`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+      authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify(body),
+  });
+
+  onUpdate && onUpdate();
+  setLoading(false);
+};
 
   const deleteOrder = async () => {
     if (!confirm("Delete?")) return;

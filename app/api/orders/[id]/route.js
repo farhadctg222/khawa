@@ -28,11 +28,20 @@ export async function PUT(req, context) {
     
 
 // ✅ status update
-if (body.status) {
-  await database.execute("UPDATE orders SET status=? WHERE id=?", [
-    body.status,
-    id,
-  ]);
+// ✅ status update + payment update
+if (body.status || body.payment_status) {
+  await database.execute(
+    `UPDATE orders
+     SET
+       status = COALESCE(?, status),
+       payment_status = COALESCE(?, payment_status)
+     WHERE id=?`,
+    [
+      body.status ?? null,
+      body.payment_status ?? null,
+      id,
+    ]
+  );
 }
 
 // ✅ edit (name + phone + address)
@@ -125,8 +134,8 @@ export async function GET(req, { params }) {
 
   try {
     const [rows] = await database.execute(
-      `SELECT id, customer_name, total_price, status, phone,  quantity, address, delivery_note, created_at 
-       FROM orders WHERE id=?`,
+      `SELECT id, customer_name, total_price, status, payment_status, phone, quantity, address, delivery_note, created_at
+FROM orders WHERE id=?`,
       [id]
     );
 

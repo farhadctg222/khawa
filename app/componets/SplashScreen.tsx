@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useEffect, useState } from "react";
 
 
@@ -56,11 +57,15 @@ export default function SplashScreen({
     return (
       <div className="fixed inset-0 bg-white flex items-center justify-center z-50">
 
-        <img
-          src="/Welcome.jpg"
-          alt="Welcome"
-          className="w-80"
-        />
+               <div className="relative w-64 h-64">
+  <Image
+    src="/welcome.png"
+    alt="welcome"
+    fill
+    sizes="2px"
+    className="object-contain"
+  />
+</div>
 
       </div>
     );

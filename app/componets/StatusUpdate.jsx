@@ -33,20 +33,20 @@ export default function StatusUpdate({ id, onUpdate }) {
   setLoading(false);
 };
 
-  const deleteOrder = async () => {
-    if (!confirm("Delete?")) return;
+  // const deleteOrder = async () => {
+  //   if (!confirm("Delete?")) return;
 
-    const token = getToken();
+  //   const token = getToken();
 
-    await fetch(`/api/orders/${id}`, {
-      method: "DELETE",
-      headers: {
-        authorization: `Bearer ${token}`, // 🔥 FIX
-      },
-    });
+  //   await fetch(`/api/orders/${id}`, {
+  //     method: "DELETE",
+  //     headers: {
+  //       authorization: `Bearer ${token}`, // 🔥 FIX
+  //     },
+  //   });
 
-    onUpdate && onUpdate();
-  };
+  //   onUpdate && onUpdate();
+  // };
 
   return (
   <div className="flex gap-2 flex-wrap">
@@ -83,13 +83,7 @@ export default function StatusUpdate({ id, onUpdate }) {
       Cancel
     </button>
 
-    <button
-      onClick={deleteOrder}
-      disabled={loading}
-      className="px-3 py-1.5 bg-red-500 text-white rounded-lg shadow hover:bg-red-600 transition text-sm"
-    >
-      Delete
-    </button>
+    
 
   </div>
 );

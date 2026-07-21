@@ -376,27 +376,27 @@ useEffect(() => {
                 </span>
               </div>
               {/* PAYMENT STATUS */}
-<div className="mt-2">
+                <div className="mt-2">
 
-<span
-className={`px-3 py-1 text-xs rounded-full text-white
-${
-o.payment_status === "paid"
-? "bg-green-600"
-: "bg-red-500"
-}
-`}
->
+                <span
+                className={`px-3 py-1 text-xs rounded-full text-white
+                ${
+                o.payment_status === "paid"
+                ? "bg-green-600"
+                : "bg-red-500"
+                }
+                `}
+                >
 
-{
-o.payment_status === "paid"
-? "💳 PAID"
-: "💰 UNPAID"
-}
+                {
+                o.payment_status === "paid"
+                ? "💳 PAID"
+                : "💰 UNPAID"
+                }
 
-</span>
+                </span>
 
-</div>
+                </div>
 
               {/* ACTIONS */}
               <div className="flex justify-between items-center">

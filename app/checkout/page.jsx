@@ -5,7 +5,11 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 
 export default function Checkout() {
-  const { cart, clearCart } = useCart();
+  const { 
+  cart, 
+  clearCart,
+  increaseQty,
+  decreaseQty} = useCart();
   const router = useRouter();
  
 
@@ -136,23 +140,57 @@ if (form.address.trim().length < 10) {
         <h2 className="font-semibold mb-2">Order Summary:</h2>
 
               {cart.map((item) => (
-          <div
-            key={item.id}
-            className="flex justify-between items-center border-b py-3"
-          >
-            <div>
-              <h3 className="font-semibold">{item.name}</h3>
+  <div
+    key={item.id}
+    className="flex justify-between items-center border-b py-3"
+  >
 
-              <p className="text-gray-500 text-sm">
-                {item.quantity} × ৳{item.price}
-              </p>
-            </div>
+    {/* Product Name */}
+    <div>
+      <h3 className="font-semibold">
+        {item.name}
+      </h3>
 
-            <h3 className="font-bold">
-              ৳ {item.quantity * item.price}
-            </h3>
-          </div>
-        ))}
+      <p className="text-gray-500 text-sm">
+        ৳ {item.price}
+      </p>
+    </div>
+
+
+    {/* Quantity Control */}
+    <div className="flex items-center gap-2">
+
+      <button
+        onClick={() => decreaseQty(item.id)}
+        className="bg-gray-200 w-8 h-8 rounded-full text-lg font-bold"
+      >
+        -
+      </button>
+
+
+      <span className="font-bold w-6 text-center">
+        {item.quantity}
+      </span>
+
+
+      <button
+        onClick={() => increaseQty(item.id)}
+        className="bg-green-600 text-white w-8 h-8 rounded-full text-lg font-bold"
+      >
+        +
+      </button>
+
+    </div>
+
+
+    {/* Price */}
+    <h3 className="font-bold">
+      ৳ {item.price * item.quantity}
+    </h3>
+
+
+  </div>
+))}
       </div>
 
                   <div className="bg-green-50 rounded-xl p-4 mt-5">

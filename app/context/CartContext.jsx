@@ -24,18 +24,48 @@ export default function CartProvider({ children }) {
     });
   };
 
+  // ✅ Increase Quantity
+const increaseQty = (id) => {
+  setCart((prev) =>
+    prev.map((item) =>
+      item.id === id
+        ? {
+            ...item,
+            quantity: item.quantity + 1,
+          }
+        : item
+    )
+  );
+};
+
+
+// ✅ Decrease Quantity (minimum 1)
+const decreaseQty = (id) => {
+  setCart((prev) =>
+    prev.map((item) =>
+      item.id === id
+        ? {
+            ...item,
+            quantity: Math.max(1, item.quantity - 1),
+          }
+        : item
+    )
+  );
+};
+
   // ✅ Decrease / Remove
-  const removeFromCart = (id) => {
-    setCart((prev) =>
-      prev
-        .map((item) =>
-          item.id === id
-            ? { ...item, quantity: item.quantity - 1 }
-            : item
-        )
-        .filter((item) => item.quantity > 0)
-    );
-  };
+ 
+const removeFromCart = (id) => {
+  setCart((prev) =>
+    prev
+      .map((item) =>
+        item.id === id
+          ? { ...item, quantity: item.quantity - 1 }
+          : item
+      )
+      .filter((item) => item.quantity > 0)
+  );
+};
 
   // ✅ পুরো item remove
   const deleteFromCart = (id) => {
@@ -46,7 +76,7 @@ const clearCart = () => {
 };
   return (
     <CartContext.Provider
-      value={{ cart, addToCart, removeFromCart, deleteFromCart, clearCart }}
+      value={{cart, addToCart, increaseQty, decreaseQty, deleteFromCart, clearCart }}
     >
       {children}
     </CartContext.Provider>

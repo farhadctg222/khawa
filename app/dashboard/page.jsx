@@ -376,27 +376,35 @@ useEffect(() => {
                 </span>
               </div>
               {/* PAYMENT STATUS */}
-                <div className="mt-2">
+              
+              <div className="mt-3 bg-gray-50 p-3 rounded-lg">
 
-                <span
-                className={`px-3 py-1 text-xs rounded-full text-white
-                ${
-                o.payment_status === "paid"
-                ? "bg-green-600"
-                : "bg-red-500"
-                }
-                `}
-                >
+              <p className="text-sm font-semibold">
+              💳 Payment Method:
+              </p>
 
-                {
-                o.payment_status === "paid"
-                ? "💳 PAID"
-                : "💰 UNPAID"
-                }
+              <p className="text-sm text-gray-600">
+              {
+              o.payment_method === "cash"
+              ? "💵 Cash on Delivery"
+              : o.payment_method?.toUpperCase()
+              }
+              </p>
 
-                </span>
 
-                </div>
+              {o.payment_method !== "cash" && (
+              <>
+              <p className="text-sm text-gray-600 mt-1">
+              📱 Number: {o.payment_number}
+              </p>
+
+              <p className="text-sm text-gray-600">
+              🔖 Transaction ID: {o.transaction_id}
+              </p>
+              </>
+              )}
+
+              </div>
 
               {/* ACTIONS */}
               <div className="flex justify-between items-center">

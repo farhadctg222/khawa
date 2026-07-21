@@ -57,12 +57,13 @@ export default function SplashScreen({
     return (
       <div className="fixed inset-0 bg-white flex items-center justify-center z-50">
 
-               <div className="relative w-64 h-64">
+              <div className="relative w-80 h-80 md:w-[420px] md:h-[420px]">
   <Image
     src="/welcome.png"
     alt="welcome"
     fill
-    sizes="200px"
+    priority
+    sizes="(max-width: 768px) 320px, 420px"
     className="object-contain"
   />
 </div>

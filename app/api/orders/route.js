@@ -8,16 +8,18 @@ export async function POST(req) {
   const body = await req.json();
 
   const {
-    name,
-    phone,
-    address,
-    package_id,
-    area_id,
-    quantity,
-    total,
-    items // ✅ new (cart)
-  } = body;
-  console.log(body)
+  name,
+  phone,
+  address,
+  package_id,
+  area_id,
+  quantity,
+  total,
+  items,
+  payment_method,
+  payment_number,
+  transaction_id
+} = body;
 
   // ✅ Case 1: Cart Order (multiple items)
   if (items && items.length > 0) {
@@ -28,11 +30,29 @@ export async function POST(req) {
     try {
       // 🔥 main order insert
       const [orderResult] = await database.execute(
-        `INSERT INTO orders (customer_name, phone, address, delivery_note, total_price) 
-         VALUES (?, ?, ?, ?, ?)`,
-        [name, phone, address || null, body.delivery_note || null, Number(total || 0)]
-      );
-
+  `INSERT INTO orders 
+  (
+    customer_name,
+    phone,
+    address,
+    delivery_note,
+    payment_method,
+    payment_number,
+    transaction_id,
+    total_price
+  ) 
+  VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
+  [
+    name,
+    phone,
+    address || null,
+    body.delivery_note || null,
+    payment_method || "cash",
+    payment_number || null,
+    transaction_id || null,
+    Number(total || 0)
+  ]
+);
       const orderId = orderResult.insertId;
 
       // 🔥 insert each item

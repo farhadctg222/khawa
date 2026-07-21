@@ -17,11 +17,14 @@ export default function Checkout() {
   const [loading, setLoading] = useState(false);
 
   const [form, setForm] = useState({
-    name: "",
-    phone: "",
-    address: "",
-    delivery_note: "",
-  });
+  name: "",
+  phone: "",
+  address: "",
+  delivery_note: "",
+  payment_method: "cash",
+  payment_number: "",
+  transaction_id: "",
+});
 
   const total = cart.reduce(
     (sum, item) => sum + item.price * item.quantity,
@@ -44,6 +47,13 @@ if (form.address.trim().length < 6) {
   alert("সম্পূর্ণ ঠিকানা লিখুন");
   return;
 }
+if (
+  form.payment_method !== "cash" &&
+  (!form.payment_number || !form.transaction_id)
+) {
+  alert("Payment তথ্য পূরণ করুন");
+  return;
+}
 
     if (cart.length === 0) {
       alert("Cart empty!");
@@ -58,13 +68,19 @@ if (form.address.trim().length < 6) {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({
-          name: form.name,
-          phone: form.phone,
-          address: form.address,
-          delivery_note: form.delivery_note,
-          items: cart,
-          total,
+       body: JSON.stringify({
+  name: form.name,
+  phone: form.phone,
+  address: form.address,
+  delivery_note: form.delivery_note,
+
+  payment_method: form.payment_method,
+  payment_number: form.payment_number,
+  transaction_id: form.transaction_id,
+
+  items: cart,
+  total,
+
         }),
       });
 
@@ -122,6 +138,93 @@ if (form.address.trim().length < 6) {
   className="border p-3 w-full mb-3 rounded-xl focus:ring-2 focus:ring-green-500 outline-none"
   onChange={(e) => setForm({ ...form, address: e.target.value })}
 />
+
+    <div className="mt-4">
+  <h2 className="font-semibold mb-2">Payment Method</h2>
+
+  <label className="flex items-center gap-2 mb-2">
+    <input
+      type="radio"
+      name="payment"
+      value="cash"
+      checked={form.payment_method === "cash"}
+      onChange={(e) =>
+        setForm({ ...form, payment_method: e.target.value })
+      }
+    />
+    Cash on Delivery
+  </label>
+
+  <label className="flex items-center gap-2 mb-2">
+    <input
+      type="radio"
+      name="payment"
+      value="bkash"
+      checked={form.payment_method === "bkash"}
+      onChange={(e) =>
+        setForm({ ...form, payment_method: e.target.value })
+      }
+    />
+    bKash
+  </label>
+
+  <label className="flex items-center gap-2 mb-2">
+    <input
+      type="radio"
+      name="payment"
+      value="nagad"
+      checked={form.payment_method === "nagad"}
+      onChange={(e) =>
+        setForm({ ...form, payment_method: e.target.value })
+      }
+    />
+    Nagad
+  </label>
+
+  <label className="flex items-center gap-2">
+    <input
+      type="radio"
+      name="payment"
+      value="rocket"
+      checked={form.payment_method === "rocket"}
+      onChange={(e) =>
+        setForm({ ...form, payment_method: e.target.value })
+      }
+    />
+    Rocket
+  </label>
+</div>
+{form.payment_method !== "cash" && (
+  <div className="mt-4 space-y-3">
+
+    <input
+      type="text"
+      placeholder="Payment Number"
+      className="border p-3 w-full rounded-xl"
+      value={form.payment_number}
+      onChange={(e) =>
+        setForm({
+          ...form,
+          payment_number: e.target.value,
+        })
+      }
+    />
+
+    <input
+      type="text"
+      placeholder="Transaction ID"
+      className="border p-3 w-full rounded-xl"
+      value={form.transaction_id}
+      onChange={(e) =>
+        setForm({
+          ...form,
+          transaction_id: e.target.value,
+        })
+      }
+    />
+
+  </div>
+)}
 
       {/* Delivery Note */}
       <textarea

@@ -41,7 +41,7 @@ if (!/^01[3-9]\d{8}$/.test(form.phone)) {
   return;
 }
 
-if (form.address.trim().length < 10) {
+if (form.address.trim().length < 6) {
   alert("সম্পূর্ণ ঠিকানা লিখুন");
   return;
 }

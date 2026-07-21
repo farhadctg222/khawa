@@ -66,7 +66,7 @@ export default function ContactPage() {
                   </h3>
 
                   <p className="text-gray-600">
-                    support@khawa.online
+                    farhadctg222@gmail.com
                   </p>
                 </div>
               </div>

@@ -27,10 +27,20 @@ export default function Checkout() {
 
   // ✅ order submit
   const handleSubmit = async () => {
-    if (!form.name || !form.phone || !form.address) {
-      alert("সব তথ্য পূরণ করুন");
-      return;
-    }
+    if (form.name.trim().length < 3) {
+  alert("সঠিক নাম লিখুন");
+  return;
+}
+
+if (!/^01[3-9]\d{8}$/.test(form.phone)) {
+  alert("সঠিক মোবাইল নম্বর লিখুন");
+  return;
+}
+
+if (form.address.trim().length < 10) {
+  alert("সম্পূর্ণ ঠিকানা লিখুন");
+  return;
+}
 
     if (cart.length === 0) {
       alert("Cart empty!");
@@ -85,49 +95,95 @@ export default function Checkout() {
 
       {/* Inputs */}
       <input
-        placeholder="Name"
-        className="border p-2 w-full mb-2 rounded"
-        onChange={(e) => setForm({ ...form, name: e.target.value })}
-      />
+  type="text"
+  placeholder="Full Name"
+  value={form.name}
+  className="border p-3 w-full mb-3 rounded-xl focus:ring-2 focus:ring-green-500 outline-none"
+  onChange={(e) => setForm({ ...form, name: e.target.value })}
+/>
 
-      <input
-        placeholder="Phone"
-        className="border p-2 w-full mb-2 rounded"
-        onChange={(e) => setForm({ ...form, phone: e.target.value })}
-      />
+     <input
+  type="tel"
+  placeholder="01XXXXXXXXX"
+  value={form.phone}
+  maxLength={11}
+  inputMode="numeric"
+  className="border p-3 w-full mb-3 rounded-xl focus:ring-2 focus:ring-green-500 outline-none"
+  onChange={(e) => setForm({ ...form, phone: e.target.value })}
+/>
 
-      <input
-        placeholder="Address"
-        className="border p-2 w-full mb-2 rounded"
-        onChange={(e) => setForm({ ...form, address: e.target.value })}
-      />
+     <input
+  type="text"
+  placeholder="Complete Address"
+  value={form.address}
+  className="border p-3 w-full mb-3 rounded-xl focus:ring-2 focus:ring-green-500 outline-none"
+  onChange={(e) => setForm({ ...form, address: e.target.value })}
+/>
 
       {/* Delivery Note */}
       <textarea
-        placeholder="Delivery Note (optional)"
-        className="border p-2 w-full mb-2 rounded"
-        onChange={(e) =>
-          setForm({ ...form, delivery_note: e.target.value })
-        }
-      />
+  rows={4}
+  value={form.delivery_note}
+  placeholder="Delivery Note (Optional)"
+  className="border p-3 w-full mb-3 rounded-xl focus:ring-2 focus:ring-green-500 outline-none"
+  onChange={(e) =>
+    setForm({ ...form, delivery_note: e.target.value })
+  }
+/>
 
       {/* Order Summary */}
       <div className="mt-4">
         <h2 className="font-semibold mb-2">Order Summary:</h2>
 
-        {cart.map((item) => (
-          <div key={item.id} className="flex justify-between text-sm mb-1">
-            <span>
-              {item.name} (x{item.quantity})
-            </span>
-            <span>৳ {item.price * item.quantity}</span>
+              {cart.map((item) => (
+          <div
+            key={item.id}
+            className="flex justify-between items-center border-b py-3"
+          >
+            <div>
+              <h3 className="font-semibold">{item.name}</h3>
+
+              <p className="text-gray-500 text-sm">
+                {item.quantity} × ৳{item.price}
+              </p>
+            </div>
+
+            <h3 className="font-bold">
+              ৳ {item.quantity * item.price}
+            </h3>
           </div>
         ))}
       </div>
 
-      <h2 className="mt-4 font-bold text-lg">
-        Total: ৳ {total}
-      </h2>
+                  <div className="bg-green-50 rounded-xl p-4 mt-5">
+
+              <div className="flex justify-between">
+
+              <span>Subtotal</span>
+
+              <span>৳ {total}</span>
+
+              </div>
+
+              <div className="flex justify-between mt-2">
+
+              <span>Delivery Charge</span>
+
+              <span>Free</span>
+
+              </div>
+
+              <hr className="my-3"/>
+
+              <div className="flex justify-between text-xl font-bold">
+
+              <span>Total</span>
+
+              <span>৳ {total}</span>
+
+              </div>
+
+              </div>
 
       <button
         onClick={handleSubmit}

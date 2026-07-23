@@ -141,7 +141,23 @@ if (
 
     <div className="mt-4">
   <h2 className="font-semibold mb-2">Payment Method</h2>
-  
+  <div className="bg-green-50 border border-green-200 p-4 rounded-xl mb-4">
+  <h3 className="font-bold text-green-700 mb-2">
+    Payment Number
+  </h3>
+
+  <p className="font-semibold">
+    📱 bKash: 01305573617
+  </p>
+
+  <p className="font-semibold">
+    📱 Nagad: 01305573617
+  </p>
+
+  <p className="text-sm text-gray-600 mt-2">
+    টাকা পাঠানোর পর Transaction ID লিখুন
+  </p>
+</div>
 
   <label className="flex items-center gap-2 mb-2">
     <input
